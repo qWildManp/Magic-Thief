@@ -12,7 +12,7 @@ public class TouchChecker : MonoBehaviour
         UP,
         NONE
     }
-
+    [SerializeField] GameObject Line;
     private struct PlayerInput{
         public InputDirections x;
         public InputDirections y;
@@ -69,6 +69,7 @@ public class TouchChecker : MonoBehaviour
                 //Debug.Log("touched!");
                 touchPosition = Input.mousePosition;
                 isTouchDown = true;
+                BeginDraw(touchPosition);
             }
             else{
                 isTouchDown = false;
@@ -82,13 +83,22 @@ public class TouchChecker : MonoBehaviour
             if(PatternMatchStair()){
                 Debug.Log("Is Stair");
             }
+            else if(PatternMatchCircle())
+            {
+                Debug.Log("Is Fire Ball");
+            }
             inputVectors.Clear();
             playerInputs.Clear();
         }
 
         wasTouchDown = isTouchDown;
     }
-
+    void BeginDraw(Vector2 touchPosition)
+    {
+        //Instantiate(Line);
+        Line.GetComponent<ParticleSystem>().Play();
+        Line.transform.position = touchPosition;
+    }
     void PushToInputBuffer(Vector2 touchPosition){
         
         if(inputVectors.Count > 0){
@@ -140,6 +150,86 @@ public class TouchChecker : MonoBehaviour
                 break;
             default:
                 break;
+            }
+        }
+        return false;
+    }
+    bool PatternMatchCircle()
+    {
+        int currentPhase = 0;
+        int currentThreshold = wrongInputThreshold;
+        for (int i = 0; i < playerInputs.Count; i++)
+        {
+            PlayerInput current = playerInputs[i];
+            switch (currentPhase)
+            {
+                case 0:
+                case 4:
+                    if(current.x == InputDirections.LEFT && current.y == InputDirections.NONE)
+                    {
+                        currentPhase += 1;
+                        currentThreshold = wrongInputThreshold;
+                    }
+                    if(current.x == InputDirections.RIGHT)
+                    {
+                        currentThreshold -= 1;
+                        if (currentThreshold < 0)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case 1:
+                case 5:
+                    if(current.x == InputDirections.NONE && current.y == InputDirections.DOWN)
+                    {
+                        if(currentPhase == 5)
+                        {
+                            return true;
+                        }
+                        currentPhase += 1;
+                        currentThreshold = wrongInputThreshold;
+                    }
+                    if(current.y == InputDirections.UP)
+                    {
+                        currentThreshold -= 1;
+                        if (currentThreshold < 0)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case 2:
+                case 6:
+                    if (current.x == InputDirections.RIGHT && current.y == InputDirections.NONE)
+                    {
+                        currentPhase += 1;
+                        currentThreshold = wrongInputThreshold;
+                    }
+                    if (current.x == InputDirections.LEFT)
+                    {
+                        currentThreshold -= 1;
+                        if (currentThreshold < 0)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case 3:
+                    if (current.x == InputDirections.NONE && current.y == InputDirections.UP)
+                    {
+                        currentPhase += 1;
+                        currentThreshold = wrongInputThreshold;
+                    }
+                    if (current.y == InputDirections.DOWN)
+                    {
+                        currentThreshold -= 1;
+                        if (currentThreshold < 0)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
             }
         }
         return false;
