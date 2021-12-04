@@ -12,7 +12,12 @@ public class TouchChecker : MonoBehaviour
         UP,
         NONE
     }
-    [SerializeField] GameObject Line;
+    //[SerializeField] GameObject Line;
+    [SerializeField] GameObject mouseCollider;
+    [SerializeField] GameObject particlePrefab;
+    private List<ParticleSystem> activeParticles;
+    private ParticleSystem drawingParticle;
+    private bool isAllParticlePlaying = false;
     private struct PlayerInput{
         public InputDirections x;
         public InputDirections y;
@@ -24,11 +29,14 @@ public class TouchChecker : MonoBehaviour
     private bool isTouchDown;
     private const int MAX_BUFFER = 128;
     private int wrongInputThreshold = 10;
+
+    private Collider2D lastCollider;
     // Start is called before the first frame update
     void Start()
     {
         inputVectors = new List<Vector2>();
         playerInputs = new List<PlayerInput>();
+        activeParticles = new List<ParticleSystem>();
     }
 
 
@@ -69,7 +77,6 @@ public class TouchChecker : MonoBehaviour
                 //Debug.Log("touched!");
                 touchPosition = Input.mousePosition;
                 isTouchDown = true;
-                BeginDraw(touchPosition);
             }
             else{
                 isTouchDown = false;
@@ -77,27 +84,81 @@ public class TouchChecker : MonoBehaviour
         #endif
         //Debug.Log(touchPosition);
         if(isTouchDown){
+            if(!wasTouchDown && isTouchDown){
+                CheckAndCreateParticle();
+            }
+            BeginDraw(touchPosition);
             PushToInputBuffer(touchPosition);
         }
         else if(wasTouchDown && !isTouchDown){
+            string pattern = "";
             if(PatternMatchStair()){
                 Debug.Log("Is Stair");
+                pattern = "Stair";
             }
             else if(PatternMatchCircle())
             {
                 Debug.Log("Is Fire Ball");
+                pattern = "Fireball";
             }
             inputVectors.Clear();
             playerInputs.Clear();
+            EndDraw(pattern);
         }
 
         wasTouchDown = isTouchDown;
     }
+
+    ParticleSystem InstantiateLine(){
+        GameObject newLine = Instantiate(particlePrefab);
+        return newLine.GetComponent<ParticleSystem>();
+    }
+
+    ParticleSystem GetAnyActiveLine(){
+        foreach(ParticleSystem p in activeParticles){
+            if(p.particleCount == 0){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    void CheckAndCreateParticle(){
+        if(GetAnyActiveLine() == null){
+            drawingParticle = InstantiateLine();
+            activeParticles.Add(drawingParticle);
+        }
+        else{
+            drawingParticle = GetAnyActiveLine();
+        }
+    }
     void BeginDraw(Vector2 touchPosition)
     {
+
         //Instantiate(Line);
-        Line.GetComponent<ParticleSystem>().Play();
-        Line.transform.position = touchPosition;
+        var screenPoint = new Vector3(touchPosition.x, touchPosition.y, 10);
+        drawingParticle.transform.position = Camera.main.ScreenToWorldPoint(screenPoint);
+        drawingParticle.Play();
+        //Line.transform.position = touchPosition;
+        mouseCollider.transform.position = drawingParticle.transform.position;
+
+    }
+
+    void EndDraw(string pattern){
+        if(GetAnyActiveLine() != null){
+            isAllParticlePlaying = false;
+        }
+        else{
+            isAllParticlePlaying = true;
+        }
+
+        if(lastCollider){
+            //
+            if(pattern == "Stair"){
+                //do something...
+                lastCollider.GetComponent<ColliderRegion>().TriggerStair();
+            }
+        }
     }
     void PushToInputBuffer(Vector2 touchPosition){
         
@@ -233,5 +294,9 @@ public class TouchChecker : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void SetLastCollider(Collider2D collider){
+        lastCollider = collider;
     }
 }
