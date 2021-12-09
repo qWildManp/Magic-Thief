@@ -76,6 +76,7 @@ public class TouchChecker : MonoBehaviour
             if(Input.GetMouseButton(0)){
                 //Debug.Log("touched!");
                 touchPosition = Input.mousePosition;
+                transform.position = Input.mousePosition;
                 isTouchDown = true;
             }
             else{
