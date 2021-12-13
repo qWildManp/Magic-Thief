@@ -51,15 +51,32 @@ public class CharacterMovement : MonoBehaviour
         {
             pos.y += velocity.y * Time.fixedDeltaTime;
             velocity.y += gravity * Time.fixedDeltaTime;
-            if (pos.y <= goundheight)
-            {
-                pos.y = goundheight;
-                isGrounded = true;
-            }
         }
+
+        Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y);
+        Vector2 rayDir = Vector2.up;
+        float rayDistance = velocity.y * Time.deltaTime;
+        RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDir, -0.6f);
+        if (hit2D.collider != null)
+        {
+            Ground ground = hit2D.collider.GetComponent<Ground>();
+            if (ground)
+            {
+                    velocity.y = 0;
+                    isGrounded = true;
+            }
+           
+        }
+       
+        else
+        {
+            isGrounded = false;
+        }
+        Debug.DrawRay(rayOrigin, rayDir * -0.6f, Color.red);
         distance += velocity.x * Time.fixedDeltaTime;
         if (isGrounded)
         {
+            //maxAcceleration = isSliding ? -maxAcceleration : maxAcceleration;
             float velocity_Ratio = velocity.x / maxVelocity;
             acceleration = maxAcceleration * (1 - velocity_Ratio);
             velocity.x += acceleration * Time.fixedDeltaTime;
