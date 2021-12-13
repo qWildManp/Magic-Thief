@@ -32,8 +32,12 @@ public class TouchChecker : MonoBehaviour
 
     private Collider2D lastCollider;
     // Start is called before the first frame update
+    private Transform playerTransform;
+    [SerializeField] private GameObject fireballPrefab;
+
     void Start()
     {
+        playerTransform = FindObjectOfType<CharacterMovement>().transform;
         inputVectors = new List<Vector2>();
         playerInputs = new List<PlayerInput>();
         activeParticles = new List<ParticleSystem>();
@@ -101,6 +105,8 @@ public class TouchChecker : MonoBehaviour
             {
                 Debug.Log("Is Fire Ball");
                 pattern = "Fireball";
+                //Create fireball
+                ShootFireball();
             }
             inputVectors.Clear();
             playerInputs.Clear();
@@ -108,6 +114,11 @@ public class TouchChecker : MonoBehaviour
         }
 
         wasTouchDown = isTouchDown;
+    }
+
+    private void ShootFireball(){
+        GameObject fireball = Instantiate(fireballPrefab);
+        fireball.transform.position = playerTransform.position;
     }
 
     ParticleSystem InstantiateLine(){
