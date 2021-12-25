@@ -626,7 +626,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 439
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1428,6 +1428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 935742417}
   - component: {fileID: 935742416}
+  - component: {fileID: 935742418}
   m_Layer: 0
   m_Name: SubType1
   m_TagString: Untagged
@@ -1467,6 +1468,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &935742418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935742415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85487afb418711148a67557f941f84a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 273790128}
+  startPoint: {fileID: 250797580}
 --- !u!1 &938405014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,6 +1828,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080004093}
   m_CullTransparentMesh: 1
+--- !u!1 &1142239776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1142239778}
+  - component: {fileID: 1142239777}
+  m_Layer: 0
+  m_Name: BarScroller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1142239777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142239776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439140133338a0f46b586aed5a5aa87b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bars:
+  - {fileID: 935742418}
+  - {fileID: 1269754371}
+  - {fileID: 1445342351}
+  player: {fileID: 1280176657}
+--- !u!4 &1142239778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142239776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 80.29228, y: 7.769079, z: -147.86044}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1166274105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,6 +2040,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1269754370}
   - component: {fileID: 1269754369}
+  - component: {fileID: 1269754371}
   m_Layer: 0
   m_Name: SubType2
   m_TagString: Untagged
@@ -2016,6 +2080,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269754371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269754368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85487afb418711148a67557f941f84a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 1766290541}
+  startPoint: {fileID: 2049487118}
 --- !u!1 &1280176655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2077,6 +2155,7 @@ MonoBehaviour:
   gravity: -100
   isGrounded: 0
   isJumping: 0
+  isOnStair: 0
   isSliding: 0
   distance: 0
 --- !u!4 &1280176658
@@ -2411,6 +2490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1445342349}
   - component: {fileID: 1445342350}
+  - component: {fileID: 1445342351}
   m_Layer: 0
   m_Name: SubType3
   m_TagString: Untagged
@@ -2450,6 +2530,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depth: 2
   loop: 0
+--- !u!114 &1445342351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445342348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85487afb418711148a67557f941f84a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 286729152}
+  startPoint: {fileID: 1166274105}
 --- !u!1 &1516447437
 GameObject:
   m_ObjectHideFlags: 0
