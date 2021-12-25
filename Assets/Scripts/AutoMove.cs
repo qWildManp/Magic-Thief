@@ -32,15 +32,21 @@ public class AutoMove : MonoBehaviour
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y);
         Vector2 rayDir = Vector2.right;
         float rayDistance = 10.0f;
-        int mask = 1 << 6;
+        int mask = (1 << 7);
         mask = ~mask;
         RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDir, rayDistance, mask);
         bool hit = false;
         if (hit2D.collider != null)
         {
-            if(hit2D.distance <= 0.3f){
+            Debug.Log("Hit" + hit2D.collider.name);
+            if(hit2D.distance <= 0.1f){
                 hit = true;
+                if (hit2D.collider.gameObject.GetComponent<DestructibleItem>()!=null)//Kill Enemy
+                {
+                    hit2D.collider.gameObject.GetComponent<DestructibleItem>().DestroyItem();
+                }
             }
+            
         }
         Debug.DrawRay(rayOrigin, rayDir * hit2D.distance, hit? Color.green : Color.red);
         return hit;

@@ -30,7 +30,7 @@ public class TouchChecker : MonoBehaviour
     private const int MAX_BUFFER = 128;
     private int wrongInputThreshold = 10;
 
-    private Collider2D lastCollider;
+    private GameObject lastCollider;
     // Start is called before the first frame update
     private Transform playerTransform;
     [SerializeField] private GameObject fireballPrefab;
@@ -106,7 +106,7 @@ public class TouchChecker : MonoBehaviour
                 Debug.Log("Is Fire Ball");
                 pattern = "Fireball";
                 //Create fireball
-                ShootFireball();
+                
             }
             inputVectors.Clear();
             playerInputs.Clear();
@@ -117,8 +117,14 @@ public class TouchChecker : MonoBehaviour
     }
 
     private void ShootFireball(){
-        GameObject fireball = Instantiate(fireballPrefab);
-        fireball.transform.position = playerTransform.position;
+        CharacterStat playerStat = playerTransform.gameObject.GetComponent<CharacterStat>();
+        int currentMana = playerStat.GetCurrentMana();
+        if(currentMana > 0)
+        {
+            GameObject fireball = Instantiate(fireballPrefab);
+            fireball.transform.position = playerTransform.position;
+            playerTransform.gameObject.GetComponent<CharacterStat>().ChangeMana(-1);
+        }
     }
 
     ParticleSystem InstantiateLine(){
@@ -170,6 +176,10 @@ public class TouchChecker : MonoBehaviour
                 //do something...
                 lastCollider.GetComponent<ColliderRegion>().TriggerStair();
             }
+        }
+        if (pattern == "Fireball")
+        {
+            ShootFireball();
         }
     }
     void PushToInputBuffer(Vector2 touchPosition){
@@ -308,7 +318,7 @@ public class TouchChecker : MonoBehaviour
         return false;
     }
 
-    public void SetLastCollider(Collider2D collider){
+    public void SetLastCollider(GameObject collider){
         lastCollider = collider;
     }
 }

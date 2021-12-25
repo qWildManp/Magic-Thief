@@ -4,19 +4,31 @@ using UnityEngine;
 
 public class ColliderRegion : MonoBehaviour
 {
-    private Collider2D collider2D;
+    public bool isStair;
+    [SerializeField] private GameObject Stair;
     void Awake(){
-        collider2D = GetComponent<Collider2D>();
+
     }
     // Start is called before the first frame update
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.GetComponent<TouchChecker>() != null){
-            collider.GetComponent<TouchChecker>().SetLastCollider(collider2D);
-            Debug.Log("Mouse In Range!");
+        if(isStair&&collider.GetComponent<TouchChecker>() != null){
+            collider.GetComponent<TouchChecker>().SetLastCollider(this.gameObject);
+            //Debug.Log("Mouse In Range!");
+        }
+        else if(!isStair)
+        {
+            Debug.Log(collider.name);
+            if (collider.tag == "Player")
+            {
+                Debug.Log("Generate Enemy");
+                GetComponent<BoxCollider2D>().enabled = false;
+                GetComponent<Paralax>().depth = 1.9f;
+            }
         }
     }
 
     public void TriggerStair(){
-        GetComponent<SpriteRenderer>().enabled = true;
+        //Debug.Log(transform.GetChild(0));
+        Stair.SetActive(true);
     }
 }

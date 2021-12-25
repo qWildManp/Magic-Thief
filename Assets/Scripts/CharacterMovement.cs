@@ -13,16 +13,14 @@ public class CharacterMovement : MonoBehaviour
     public float jumpForce = 100f;
     public float gravity = -100f;
     public bool isGrounded = false;
+    public bool isJumping = false;
     public bool isSliding = false;
-    public float goundheight = -3.5f;
     public float distance;
     private int hitMask;
-    Rigidbody2D rigidbody2D;
     void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
         animator = transform.GetChild(0).GetComponent<Animator>();
-        hitMask = 1 << 6;
+        hitMask = (1 << 7)|(1 << 8);
         hitMask = ~hitMask;
     }
     private void Update()
@@ -41,11 +39,12 @@ public class CharacterMovement : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space)&& isSliding == false)
             {
+                isJumping = true;
                 isGrounded = false;
                 velocity.y = jumpForce;
             }
         }
-        PlayerUpdate();
+            PlayerUpdate();
     }
     // Update is called once per frame
 
@@ -61,20 +60,25 @@ public class CharacterMovement : MonoBehaviour
         float rayDistance = 10.0f;
         RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDir, rayDistance, hitMask);
         pushback = new Vector2(0, 0);
-        
-        bool hit = false;
+
+        bool hitObstacle = false;
         if (hit2D.collider != null)
         {
-            if(hit2D.distance <= 0.3f){
-                hit = true;
+            if (hit2D.collider.GetComponent<Stair>())
+            {
+                hitObstacle = false;
+            }
+            else if(hit2D.distance <= 0.3f){
+                hitObstacle = true;
+                GetComponent<CharacterStat>().ChangeHealth(-1);
                 pushback = Vector2.left * (0.3f - hit2D.distance);
                 //pos = pos + pushback;
                 //transform.position = pos;
                 
             }
         }
-        Debug.DrawRay(rayOrigin, rayDir * hit2D.distance, hit? Color.green : Color.red);
-        return hit;
+        Debug.DrawRay(rayOrigin, rayDir * hit2D.distance, hitObstacle ? Color.green : Color.red);
+        return hitObstacle;
     }
 
     bool RaycastToGround(out Vector2 pushback)
@@ -94,6 +98,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 //Debug.Log(hit2D.distance);
                 isGrounded = true;
+                isJumping = false;
                 if(hit2D.distance < 0.1f){
                     pushback = Vector2.up * (0.1f - hit2D.distance);
                     velocity.y = 0;
@@ -120,7 +125,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 //Debug.Log(hit2D.distance);
                 isOnCeiling = true;
-                if(hit2D.distance < 0.6f){
+                if (hit2D.distance < 0.6f){
                     pushback = -Vector2.up * (0.2f - hit2D.distance);
                     velocity.y = 0;
                 }
@@ -141,6 +146,10 @@ public class CharacterMovement : MonoBehaviour
         if(velocity.y <= 0){
             if(RaycastToGround(out pushback)){
                 pos += pushback;
+                if (velocity.y < 0)
+                {
+                    velocity.y = 0;
+                }
             }
         }
         else{
@@ -150,10 +159,11 @@ public class CharacterMovement : MonoBehaviour
         }
         if(RaycastToRight(out pushback)){
             pos += pushback;
-            if(velocity.y > 0){
-                velocity.y = 0;
+            if (velocity.x > 0)
+            {
+                velocity.x = 0;
             }
-            
+
         }
         distance += velocity.x * dt;
         if (isGrounded)
@@ -170,7 +180,7 @@ public class CharacterMovement : MonoBehaviour
         pos.y += velocity.y * dt;
         velocity.y += gravity * dt;
         //rigidbody2D.velocity = new Vector2(velocity.x, rigidbody2D.velocity.y);
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
 
         transform.position = pos;
     }
