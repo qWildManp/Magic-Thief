@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviour
     public float gravity = -100f;
     public bool isGrounded = false;
     public bool isJumping = false;
+    public bool isOnStair = false;
     public bool isSliding = false;
     public float distance;
     private int hitMask;
@@ -50,6 +51,10 @@ public class CharacterMovement : MonoBehaviour
 
 
     bool RaycastToRight(out Vector2 pushback){
+        pushback = new Vector2(0, 0);
+        if(isOnStair){
+            return false;
+        }
         Vector2 pos = transform.position;
         float headOffset = 0.0f;
         if(isSliding){
@@ -59,7 +64,7 @@ public class CharacterMovement : MonoBehaviour
         Vector2 rayDir = Vector2.right;
         float rayDistance = 10.0f;
         RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDir, rayDistance, hitMask);
-        pushback = new Vector2(0, 0);
+        
 
         bool hitObstacle = false;
         if (hit2D.collider != null)
