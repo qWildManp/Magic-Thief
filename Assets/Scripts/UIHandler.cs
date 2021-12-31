@@ -35,7 +35,6 @@ public class UIHandler : MonoBehaviour
         float currentMana = playerStat.mana;
         float maxMana = playerStat.max_Mana;
         float currentRatio = currentMana / maxMana;
-        Debug.Log("Manaratio:" + currentRatio);
         ManaBarUI.GetComponent<Image>().fillAmount = currentRatio;
     }
 }

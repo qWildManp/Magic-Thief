@@ -27,7 +27,8 @@ public class CharacterStat : MonoBehaviour
         int currentHealth = GetCurrentHealth();
         if(currentHealth == 0)
         {
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
+            //this.gameObject.SetActive(false);
             Debug.Log("GAME OVER");
             return;
         }
@@ -54,7 +55,7 @@ public class CharacterStat : MonoBehaviour
         }
         previousHealth = GetCurrentHealth();
     }
-    public void ChangeHealth(int num)
+    public void ChangeHealth(int num)// change players health
     {
         if(immune)
         {

@@ -23,6 +23,10 @@ public class Stair : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!player)
+        {
+            return;
+        }
         Vector3 position = player.transform.position;
         CharacterMovement movement = player.GetComponent<CharacterMovement>();
         float percentage = 0;

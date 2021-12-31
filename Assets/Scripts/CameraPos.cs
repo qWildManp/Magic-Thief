@@ -7,6 +7,8 @@ public class CameraPos : MonoBehaviour
     // Start is called before the first frame update
     Transform playerTransform;
     GameObject player;
+    public float offset;
+    public float upperThreshold;
     void Start()
     {
         player = FindObjectOfType<CharacterMovement>().gameObject;
@@ -15,14 +17,18 @@ public class CameraPos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!player)
+        {
+            return;
+        }
         playerTransform = player.transform;
         //Vector2 updateCameraPos = new Vector3(playerTransform.position.x+6.4f, playerTransform.position.y + 2.0f);
         //transform.position = Vector3.Lerp(transform.position, updateCameraPos, 2f * Time.deltaTime);
         Vector3 updateCameraPos = transform.position;
         float distance_y = Mathf.Abs(transform.position.y - playerTransform.position.y);
         if (player.GetComponent<CharacterMovement>().isGrounded)
-            if(distance_y < 0.5 || distance_y >= 10)
-                updateCameraPos.y = Mathf.Lerp(transform.position.y, playerTransform.position.y + 5f, 5f * Time.deltaTime);
+            if(distance_y < 0.5 || distance_y >= upperThreshold)
+                updateCameraPos.y = Mathf.Lerp(transform.position.y, playerTransform.position.y + offset, 5f * Time.deltaTime);
         if (player.GetComponent<CharacterMovement>().isGrounded == false)
         {
                 if(!player.GetComponent<CharacterMovement>().isJumping){

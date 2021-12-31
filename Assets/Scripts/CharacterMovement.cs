@@ -12,10 +12,12 @@ public class CharacterMovement : MonoBehaviour
     public float maxVelocity = 100;
     public float jumpForce = 100f;
     public float gravity = -100f;
+    public float previousVelocity = -100f;
     public bool isGrounded = false;
     public bool isJumping = false;
     public bool isOnStair = false;
     public bool isSliding = false;
+    public bool isOut = false;
     public float distance;
     private int hitMask;
     void Start()
@@ -30,15 +32,15 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("isSliding", isSliding);
         if (isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.LeftControl))// sliding
             {
                 isSliding = true;
             }
-            if (Input.GetKeyUp(KeyCode.LeftControl))
+            if (Input.GetKeyUp(KeyCode.LeftControl))// sliding
             {
                 isSliding = false;
             }
-            if (Input.GetKeyDown(KeyCode.Space)&& isSliding == false)
+            if (Input.GetKeyDown(KeyCode.Space)&& isSliding == false)//jumping
             {
                 isJumping = true;
                 isGrounded = false;
@@ -46,11 +48,18 @@ public class CharacterMovement : MonoBehaviour
             }
         }
             PlayerUpdate();
+        if (isOut)// if player hit wall or fall out
+        {
+            if (!GetComponent<CharacterStat>().immune)
+            {
+                GetComponent<CharacterStat>().ChangeHealth(-1);
+            }
+        }
     }
     // Update is called once per frame
 
 
-    bool RaycastToRight(out Vector2 pushback){
+    bool RaycastToRight(out Vector2 pushback){// detect right direction collision
         pushback = new Vector2(0, 0);
         if(isOnStair){
             return false;
@@ -75,10 +84,8 @@ public class CharacterMovement : MonoBehaviour
             }
             else if(hit2D.distance <= 0.3f){
                 hitObstacle = true;
-                GetComponent<CharacterStat>().ChangeHealth(-1);
+                isOut = true;
                 pushback = Vector2.left * (0.3f - hit2D.distance);
-                //pos = pos + pushback;
-                //transform.position = pos;
                 
             }
         }
@@ -86,8 +93,7 @@ public class CharacterMovement : MonoBehaviour
         return hitObstacle;
     }
 
-    bool RaycastToGround(out Vector2 pushback)
-    {
+    bool RaycastToGround(out Vector2 pushback){// detect ground collision
         Vector2 pos = transform.position;
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y - 0.5f);
         Vector2 rayDir = Vector2.up;
@@ -115,7 +121,7 @@ public class CharacterMovement : MonoBehaviour
         return isGrounded;
     }
 
-    bool RaycastToCeiling(out Vector2 pushback){
+    bool RaycastToCeiling(out Vector2 pushback){// detect ceiling collision
         Vector2 pos = transform.position;
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y);
         Vector2 rayDir = Vector2.up;
@@ -146,8 +152,8 @@ public class CharacterMovement : MonoBehaviour
 
         float dt = Time.deltaTime;
         Vector2 pos = transform.position;
-
         Vector2 pushback;
+        // when collision is detected , then push back the player
         if(velocity.y <= 0){
             if(RaycastToGround(out pushback)){
                 pos += pushback;
@@ -164,16 +170,10 @@ public class CharacterMovement : MonoBehaviour
         }
         if(RaycastToRight(out pushback)){
             pos += pushback;
-            if (velocity.x > 0)
-            {
-                velocity.x = 0;
-            }
-
         }
         distance += velocity.x * dt;
-        if (isGrounded)
+        if (isGrounded)// if grounded , then calculate the horizontal velocity
         {
-            //maxAcceleration = isSliding ? -maxAcceleration : maxAcceleration;
             float velocity_Ratio = velocity.x / maxVelocity;
             acceleration = maxAcceleration * (1 - velocity_Ratio);
             velocity.x += acceleration * dt;
@@ -184,9 +184,6 @@ public class CharacterMovement : MonoBehaviour
         }
         pos.y += velocity.y * dt;
         velocity.y += gravity * dt;
-        //rigidbody2D.velocity = new Vector2(velocity.x, rigidbody2D.velocity.y);
-        //Debug.Log(isGrounded);
-
         transform.position = pos;
     }
 
