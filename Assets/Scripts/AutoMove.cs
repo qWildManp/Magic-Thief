@@ -17,8 +17,9 @@ public class AutoMove : MonoBehaviour
         Vector2 pos = transform.position;
         pos += Vector2.right * 6.0f * Time.deltaTime;
         transform.position = pos;
+        
         if(RaycastToRight()){
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
         timeSurvived += Time.deltaTime;
         if(timeSurvived > 5.0f){
@@ -44,6 +45,7 @@ public class AutoMove : MonoBehaviour
                 if (hit2D.collider.gameObject.GetComponent<DestructibleItem>()!=null)//Kill Enemy
                 {
                     hit2D.collider.gameObject.GetComponent<DestructibleItem>().DestroyItem();
+                    Destroy(gameObject);
                 }
             }
             
