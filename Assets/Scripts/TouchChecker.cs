@@ -174,7 +174,7 @@ public class TouchChecker : MonoBehaviour
             //
             if(pattern == "Stair"){
                 //do something...
-                lastCollider.GetComponent<ColliderRegion>().TriggerStair();
+                lastCollider.GetComponent<ColliderRegion>().TriggerStair(true);
             }
         }
         if (pattern == "Fireball")

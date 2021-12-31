@@ -35,6 +35,7 @@ public class Stair : MonoBehaviour
         {
             Debug.Log("leave stair");
             playerAtStair = false;
+            transform.parent.GetComponent<ColliderRegion>().TriggerStair(false);
             movement.isOnStair = false;
 
         }

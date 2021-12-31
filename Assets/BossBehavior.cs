@@ -6,6 +6,7 @@ using UnityEngine;
 public class BossBehavior : MonoBehaviour
 {
     public int currentMode;
+    public List<Vector2> modeRelativeDistance;
     public InfiniteScrollingController ScrollbarController;
     // Start is called before the first frame update
     void Start()

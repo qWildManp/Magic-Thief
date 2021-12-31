@@ -6678,7 +6678,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280176655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.2, y: 5, z: 0.6}
+  m_LocalPosition: {x: -13.2, y: 1.6, z: 0.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1516447441}
@@ -7231,7 +7231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354431448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.8, y: 6.5, z: 0}
+  m_LocalPosition: {x: 11.4, y: 6.5, z: 0}
   m_LocalScale: {x: 11.324274, y: 7.7845325, z: 11.324274}
   m_Children: []
   m_Father: {fileID: 0}
@@ -7250,6 +7250,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
+  modeRelativeDistance:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   ScrollbarController: {fileID: 1142239777}
 --- !u!1 &1360196928
 GameObject:

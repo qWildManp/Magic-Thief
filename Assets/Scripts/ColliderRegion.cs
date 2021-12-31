@@ -27,8 +27,8 @@ public class ColliderRegion : MonoBehaviour
         }
     }
 
-    public void TriggerStair(){
+    public void TriggerStair(bool trigger){
         //Debug.Log(transform.GetChild(0));
-        Stair.SetActive(true);
+        Stair.SetActive(trigger);
     }
 }
