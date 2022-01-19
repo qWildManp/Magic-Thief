@@ -22,7 +22,7 @@ public class AutoMove : MonoBehaviour
             //Destroy(gameObject);
         }
         timeSurvived += Time.deltaTime;
-        if(timeSurvived > 5.0f){
+        if(timeSurvived > 3.0f){
             Destroy(gameObject);
         }
     }

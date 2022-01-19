@@ -13,7 +13,7 @@ public class Mortar : MonoBehaviour
     private CharacterMovement player;
     void Start()
     {
-        startSpeedX = -12.0f;
+        startSpeedX = -10.0f;
         startSpeedY = 30.0f;
         hitMask = (1 << 7)|(1 << 8);
         hitMask = ~hitMask;

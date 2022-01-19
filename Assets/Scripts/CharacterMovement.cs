@@ -42,7 +42,9 @@ public class CharacterMovement : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space)&& isSliding == false)//jumping
             {
+                
                 isJumping = true;
+                animator.SetBool("isJumping", isJumping);
                 isGrounded = false;
                 velocity.y = jumpForce;
             }
@@ -110,7 +112,8 @@ public class CharacterMovement : MonoBehaviour
                 //Debug.Log(hit2D.distance);
                 isGrounded = true;
                 isJumping = false;
-                if(hit2D.distance < 0.1f){
+                animator.SetBool("isJumping", isJumping);
+                if (hit2D.distance < 0.1f){
                     pushback = Vector2.up * (0.1f - hit2D.distance);
                     velocity.y = 0;
                 }
