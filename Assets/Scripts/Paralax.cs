@@ -24,14 +24,20 @@ public class Paralax : MonoBehaviour
         {
             float realVelocity = player.velocity.x / depth;
             Vector2 pos = transform.position;
-
             pos.x -= realVelocity * Time.fixedDeltaTime;
-
-            if (pos.x <= -12 && loop)
-            {
-                pos.x = 20;
-            }
             transform.position = pos;
+            if (loop)
+            {
+                pos = new Vector2(player.transform.position.x + 13, transform.position.y);
+                pos.x -= realVelocity * Time.fixedDeltaTime;
+                if(pos.x - player.transform.position.x < -10)
+                {
+                    Debug.Log("Enter");
+                    pos.x = player.transform.position.x + 13;
+                }
+                transform.position = pos;
+
+            }
         }
     }
 }

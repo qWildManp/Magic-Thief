@@ -36,6 +36,8 @@ public class CheckpointCotroller : MonoBehaviour
                     player.transform.position = transform.position;
                 }*/
                 player.transform.position = GetCurrentCheckpointPos();
+                GameObject.Find("MainCamera").transform.position = currentCheckpoint.GetComponent<Checkpoint>().CameraPos;
+                GameObject.Find("ParticleCamera").transform.position = currentCheckpoint.GetComponent<Checkpoint>().CameraPos;
                 playerMovement.velocity.x = 10f;
                 playerMovement.isOut = false;
         }

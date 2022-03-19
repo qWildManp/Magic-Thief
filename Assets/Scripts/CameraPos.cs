@@ -32,7 +32,8 @@ public class CameraPos : MonoBehaviour
         if (player.GetComponent<CharacterMovement>().isGrounded == false)
         {
                 if(!player.GetComponent<CharacterMovement>().isJumping){
-                    updateCameraPos.y = Mathf.Lerp(transform.position.y, playerTransform.position.y , 7f * Time.deltaTime);
+                    updateCameraPos.y = Mathf.Lerp(transform.position.y, playerTransform.position.y, 7f * Time.deltaTime);
+                    
             }
         }
         updateCameraPos.x = playerTransform.position.x + 13f;

@@ -28,6 +28,10 @@ public class CharacterMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (isOnStair)
+        {
+            isGrounded = true;
+        }
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isSliding", isSliding);
         if (isGrounded)
@@ -67,7 +71,7 @@ public class CharacterMovement : MonoBehaviour
             return false;
         }
         Vector2 pos = transform.position;
-        float headOffset = 0.0f;
+        float headOffset = 1f;
         if(isSliding){
             headOffset = -0.2f;
         }
