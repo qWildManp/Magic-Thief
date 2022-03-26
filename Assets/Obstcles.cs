@@ -8,18 +8,26 @@ public class Obstcles : MonoBehaviour,DestructibleItem
     public float RespawnTime;
     public float currentTime;
     private BoxCollider2D collider;
-    private GameObject obstacleSprite;
+    [SerializeField] private List<GameObject> obstacleSprites;
     public void DestroyItem()
     {
         // Destroy(this.gameObject);
         collider.enabled = false;
-        obstacleSprite.SetActive(false);
+        foreach(GameObject obstacleSprite in obstacleSprites)
+            obstacleSprite.SetActive(false);
     }
-        // Start is called before the first frame update
-        void Start()
+
+    public void RespawnItem()
+    {
+        // Destroy(this.gameObject);
+        collider.enabled = false;
+        foreach (GameObject obstacleSprite in obstacleSprites)
+            obstacleSprite.SetActive(true);
+    }
+    // Start is called before the first frame update
+    void Start()
     {
         collider = GetComponent<BoxCollider2D>();
-        obstacleSprite = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -33,7 +41,7 @@ public class Obstcles : MonoBehaviour,DestructibleItem
             {
                 currentTime = 0;
                 collider.enabled = true;
-                obstacleSprite.SetActive(true);
+                RespawnItem();
             }
         }
     }

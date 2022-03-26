@@ -586,6 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &103005932
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2095,6 +2096,8 @@ MonoBehaviour:
   canRespawn: 1
   RespawnTime: 30
   currentTime: 0
+  obstacleSprites:
+  - {fileID: 705074073}
 --- !u!61 &388781129
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2478,6 +2481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &534605697
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7818,6 +7822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &635751724
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10067,6 +10072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1023062610
 GameObject:
   m_ObjectHideFlags: 0
@@ -10417,6 +10423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &1077069939
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11941,6 +11948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &1350488237
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12506,6 +12514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332cd082593d0214cb55023e8f0bb64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraPos: {x: 0, y: 0, z: 0}
 --- !u!212 &1465664228
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
@@ -23,7 +21,7 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         animator = transform.GetChild(0).GetComponent<Animator>();
-        hitMask = (1 << 7)|(1 << 8);
+        hitMask = (1 << 7) | (1 << 8);
         hitMask = ~hitMask;
     }
     private void Update()
@@ -34,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
         }
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isSliding", isSliding);
+        animator.SetBool("isUpStair", isOnStair);
         if (isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.LeftControl))// sliding
@@ -44,16 +43,16 @@ public class CharacterMovement : MonoBehaviour
             {
                 isSliding = false;
             }
-            if (Input.GetKeyDown(KeyCode.Space)&& isSliding == false)//jumping
+            if (Input.GetKeyDown(KeyCode.Space) && isSliding == false)//jumping
             {
-                
+
                 isJumping = true;
                 animator.SetBool("isJumping", isJumping);
                 isGrounded = false;
                 velocity.y = jumpForce;
             }
         }
-            PlayerUpdate();
+        PlayerUpdate();
         if (isOut)// if player hit wall or fall out
         {
             if (!GetComponent<CharacterStat>().immune)
@@ -65,21 +64,24 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
 
 
-    bool RaycastToRight(out Vector2 pushback){// detect right direction collision
+    bool RaycastToRight(out Vector2 pushback)
+    {// detect right direction collision
         pushback = new Vector2(0, 0);
-        if(isOnStair){
+        if (isOnStair)
+        {
             return false;
         }
         Vector2 pos = transform.position;
         float headOffset = 1f;
-        if(isSliding){
+        if (isSliding)
+        {
             headOffset = -0.2f;
         }
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y + headOffset);
         Vector2 rayDir = Vector2.right;
         float rayDistance = 10.0f;
         RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDir, rayDistance, hitMask);
-        
+
 
         bool hitObstacle = false;
         if (hit2D.collider != null)
@@ -88,18 +90,20 @@ public class CharacterMovement : MonoBehaviour
             {
                 hitObstacle = false;
             }
-            else if(hit2D.distance <= 0.3f){
+            else if (hit2D.distance <= 0.3f)
+            {
                 hitObstacle = true;
                 isOut = true;
                 pushback = Vector2.left * (0.3f - hit2D.distance);
-                
+
             }
         }
         Debug.DrawRay(rayOrigin, rayDir * hit2D.distance, hitObstacle ? Color.green : Color.red);
         return hitObstacle;
     }
 
-    bool RaycastToGround(out Vector2 pushback){// detect ground collision
+    bool RaycastToGround(out Vector2 pushback)
+    {// detect ground collision
         Vector2 pos = transform.position;
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y - 0.5f);
         Vector2 rayDir = Vector2.up;
@@ -111,24 +115,26 @@ public class CharacterMovement : MonoBehaviour
         if (hit2D.collider != null)
         {
             Ground ground = hit2D.collider.GetComponent<Ground>();
-            if (ground && (hit2D.distance <= 0.11f))
+            if (ground && (hit2D.distance <= 0.61f))
             {
                 //Debug.Log(hit2D.distance);
                 isGrounded = true;
                 isJumping = false;
                 animator.SetBool("isJumping", isJumping);
-                if (hit2D.distance < 0.1f){
-                    pushback = Vector2.up * (0.1f - hit2D.distance);
+                if (hit2D.distance < 0.6f)
+                {
+                    pushback = Vector2.up * (0.6f - hit2D.distance);
                     velocity.y = 0;
                 }
             }
-           
+
         }
-        Debug.DrawRay(rayOrigin, rayDir * (-hit2D.distance), isGrounded? Color.green : Color.red);
+        Debug.DrawRay(rayOrigin, rayDir * (-hit2D.distance), isGrounded ? Color.green : Color.red);
         return isGrounded;
     }
 
-    bool RaycastToCeiling(out Vector2 pushback){// detect ceiling collision
+    bool RaycastToCeiling(out Vector2 pushback)
+    {// detect ceiling collision
         Vector2 pos = transform.position;
         Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y);
         Vector2 rayDir = Vector2.up;
@@ -143,14 +149,15 @@ public class CharacterMovement : MonoBehaviour
             {
                 //Debug.Log(hit2D.distance);
                 isOnCeiling = true;
-                if (hit2D.distance < 0.6f){
+                if (hit2D.distance < 0.6f)
+                {
                     pushback = -Vector2.up * (0.2f - hit2D.distance);
                     velocity.y = 0;
                 }
             }
-           
+
         }
-        Debug.DrawRay(rayOrigin, rayDir * (hit2D.distance), isOnCeiling? Color.green : Color.red);
+        Debug.DrawRay(rayOrigin, rayDir * (hit2D.distance), isOnCeiling ? Color.green : Color.red);
         return isOnCeiling;
     }
 
@@ -161,8 +168,10 @@ public class CharacterMovement : MonoBehaviour
         Vector2 pos = transform.position;
         Vector2 pushback;
         // when collision is detected , then push back the player
-        if(velocity.y <= 0){
-            if(RaycastToGround(out pushback)){
+        if (velocity.y <= 0)
+        {
+            if (RaycastToGround(out pushback))
+            {
                 pos += pushback;
                 if (velocity.y < 0)
                 {
@@ -170,12 +179,15 @@ public class CharacterMovement : MonoBehaviour
                 }
             }
         }
-        else{
-            if(RaycastToCeiling(out pushback)){
+        else
+        {
+            if (RaycastToCeiling(out pushback))
+            {
                 pos += pushback;
             }
         }
-        if(RaycastToRight(out pushback)){
+        if (RaycastToRight(out pushback))
+        {
             pos += pushback;
         }
         distance += velocity.x * dt;
@@ -184,7 +196,7 @@ public class CharacterMovement : MonoBehaviour
             float velocity_Ratio = velocity.x / maxVelocity;
             acceleration = maxAcceleration * (1 - velocity_Ratio);
             velocity.x += acceleration * dt;
-            if(velocity.x >= maxVelocity)
+            if (velocity.x >= maxVelocity)
             {
                 velocity.x = maxVelocity;
             }
