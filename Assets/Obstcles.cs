@@ -20,7 +20,7 @@ public class Obstcles : MonoBehaviour,DestructibleItem
     public void RespawnItem()
     {
         // Destroy(this.gameObject);
-        collider.enabled = false;
+        collider.enabled = true;
         foreach (GameObject obstacleSprite in obstacleSprites)
             obstacleSprite.SetActive(true);
     }

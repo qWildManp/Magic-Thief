@@ -22,7 +22,7 @@ public class ColliderRegion : MonoBehaviour
             {
                 Debug.Log("Generate Enemy");
                 GetComponent<BoxCollider2D>().enabled = false;
-                GetComponent<Paralax>().depth = 1.5f;
+                GetComponent<Paralax>().depth = 1.3f;
             }
         }
     }

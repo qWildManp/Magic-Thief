@@ -25,5 +25,6 @@ public class FallDownController : MonoBehaviour
             CharacterMovement playerMovement = collider.gameObject.GetComponent<CharacterMovement>();
             playerMovement.isOut = true;
         }
+        
     }
 }

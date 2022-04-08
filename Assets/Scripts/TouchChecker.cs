@@ -33,11 +33,13 @@ public class TouchChecker : MonoBehaviour
     private GameObject lastCollider;
     // Start is called before the first frame update
     private Transform playerTransform;
+    Animator playerAnimator;
     [SerializeField] private GameObject fireballPrefab;
 
     void Start()
     {
         playerTransform = FindObjectOfType<CharacterMovement>().transform;
+        playerAnimator = playerTransform.GetChild(0).GetComponent<Animator>();
         inputVectors = new List<Vector2>();
         playerInputs = new List<PlayerInput>();
         activeParticles = new List<ParticleSystem>();
@@ -87,7 +89,6 @@ public class TouchChecker : MonoBehaviour
                 isTouchDown = false;
             }
         #endif
-        //Debug.Log(touchPosition);
         if(isTouchDown){
             if(!wasTouchDown && isTouchDown){
                 CheckAndCreateParticle();
@@ -122,9 +123,10 @@ public class TouchChecker : MonoBehaviour
         if(currentMana > 0)
         {
             GameObject fireball = Instantiate(fireballPrefab);
-            fireball.transform.position = playerTransform.position;
+            fireball.transform.position = new Vector3(playerTransform.position.x + 1, playerTransform.position.y, playerTransform.position.z);
             playerTransform.gameObject.GetComponent<CharacterStat>().ChangeMana(-1);
         }
+
     }
 
     ParticleSystem InstantiateLine(){

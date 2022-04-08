@@ -115,16 +115,25 @@ public class CharacterMovement : MonoBehaviour
         if (hit2D.collider != null)
         {
             Ground ground = hit2D.collider.GetComponent<Ground>();
-            if (ground && (hit2D.distance <= 0.61f))
+            fire fire= hit2D.collider.GetComponent<fire>();
+            if (hit2D.distance <= 0.71f)
             {
-                //Debug.Log(hit2D.distance);
-                isGrounded = true;
-                isJumping = false;
-                animator.SetBool("isJumping", isJumping);
-                if (hit2D.distance < 0.6f)
+                if (ground)
                 {
-                    pushback = Vector2.up * (0.6f - hit2D.distance);
+                 //Debug.Log(hit2D.distance);
+                    isGrounded = true;
+                    isJumping = false;
+                    animator.SetBool("isJumping", isJumping);
+                    if (hit2D.distance < 0.7f)
+                    {
+                    pushback = Vector2.up * (0.7f - hit2D.distance);
                     velocity.y = 0;
+                    }
+                   }
+               else if (fire)
+                {
+                    isOut = true;
+                    
                 }
             }
 

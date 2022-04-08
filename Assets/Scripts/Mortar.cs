@@ -13,7 +13,7 @@ public class Mortar : MonoBehaviour
     private CharacterMovement player;
     void Start()
     {
-        startSpeedX = -10.0f;
+        startSpeedX = -15.0f;
         startSpeedY = 30.0f;
         hitMask = (1 << 7)|(1 << 8);
         hitMask = ~hitMask;
@@ -48,7 +48,9 @@ public class Mortar : MonoBehaviour
             Vector3 difference = transform.position - player.transform.position;
             difference.z = 0;
             float distance = difference.magnitude;
-            if(distance < 1.5){
+            if(distance < 1.5)
+            {
+                player.GetComponent<CharacterStat>().ChangeHealth(-1);
                 Debug.Log("Hit player!");
                 return true;
             }
